@@ -1,0 +1,44 @@
+schema_version: 1
+
+context:
+  name: pygbx
+  version: "0.3"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/pygbx-${{ version }}.tar.gz
+  sha256: 83a944b91340e5738f196344c2a9a6d4485d020d7d64d61f03bb6718ca0b2212
+
+build:
+  number: 2
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - python ${{ python_min }}.*
+    - pip
+    - setuptools
+  run:
+    - python >=${{ python_min }}
+    - python-lzo
+
+tests:
+  - python:
+      imports:
+        - pygbx
+      pip_check: true
+      python_version: ${{ python_min }}
+
+about:
+  summary: A Python library to parse GBX files
+  license: GPL-3.0-or-later
+  license_file: LICENSE
+  homepage: https://github.com/donadigo/pygbx
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
